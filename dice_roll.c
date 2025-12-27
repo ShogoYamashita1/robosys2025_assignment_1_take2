@@ -11,27 +11,43 @@ int GetRandom(int min, int max)
 
 
 int main(void){
-int input, num1 = 0, num2 = 0, flag = 0;
+int input, num1 = 0, num2 = 0, take = 0;
+static int flag;
 
 // 入力確認と数字分け
 while((input = getchar()) != EOF){
     if(isalpha(input)){// 文字：真ん中以外・複数個でエラー出るようにする
             //puts("D?");
-        if(input == 'd' || input == 'D'){
+        if( (input == 'd' || input == 'D') && flag != 2 ){
             //puts("D");
             flag = 1;
+            take = 0;
         }
         else{flag = 2;}
     }
-    if(isdigit(input)){// 数字：０でエラー出るようにする
+    else if(isdigit(input)){// 数字
         if(flag == 0){
-            num1 *= 10;
-            num1 += (input - '0');
-            //printf("num1 %d input %d\n", num1, input);
+            if( !(take == 0 && input == '0') ){
+                num1 *= 10;
+                num1 += (input - '0');
+                take++;
+                //printf("num1 %d input %d\n", num1, input);
             }
-        else{num2 *= 10;num2 += (input - '0');}
+            else{
+                flag = 2;
+                //printf("out!! : flag = %d\n", flag);
+            }
+        }
+        else{
+            if( !(take == 0 && input == '0') ){
+                num2 *= 10;num2 += (input - '0');
+                take++;
+            }
+            else{flag = 2;}
+        }
         //printf("%d %d\n", num1, num2);
     }
+//printf("take = %d : flag = %d\n", take, flag);
 }
 
 
