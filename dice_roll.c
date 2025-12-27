@@ -16,9 +16,9 @@ static int flag;
 
 // 入力確認と数字分け
 while((input = getchar()) != EOF){
-    if(isalpha(input)){// 文字：真ん中以外・複数個でエラー出るようにする
+    if(isalpha(input)){// 文字
             //puts("D?");
-        if( (input == 'd' || input == 'D') && flag != 2 ){
+        if( (input == 'd' || input == 'D') && flag != 2 && take != 0 ){
             //puts("D");
             flag = 1;
             take = 0;
@@ -38,32 +38,38 @@ while((input = getchar()) != EOF){
                 //printf("out!! : flag = %d\n", flag);
             }
         }
-        else{
+        else if(flag == 1){
             if( !(take == 0 && input == '0') ){
                 num2 *= 10;num2 += (input - '0');
                 take++;
+                flag = 3;
             }
             else{flag = 2;}
         }
         //printf("%d %d\n", num1, num2);
     }
+    else if(input != '\n'){
+        puts("not d");
+        flag = 2;
+    }
 //printf("take = %d : flag = %d\n", take, flag);
+//printf("input = %c\n", input);
 }
 
 
 // 終了処理
-if(flag == 2){
-    fprintf(stderr, "error\n");
-return 1;
-}
-else{
+if(flag == 3){
 // 乱数
 srand((unsigned int)time(NULL));
 
 for(int i = 0; i < num1; i++){
     printf("[%2d]out : %3d\n", i, GetRandom(1, num2));
 }
-//puts("end");printf("%d %d\n", num1, num2);
-return 0;
+    //puts("end");printf("%d %d\n", num1, num2);
+    return 0;
+}
+else{
+    fprintf(stderr, "error\n");
+    return 1;
 }
 }
