@@ -6,7 +6,7 @@
 - Python
 
 ## テスト環境
- - Ubuntu 24.04 LTS
+ - Ubuntu 22.04.5 LTS
 
 ## 使い方
 ```bash
