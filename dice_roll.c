@@ -38,9 +38,10 @@ while((input = getchar()) != EOF){
                 //printf("out!! : flag = %d\n", flag);
             }
         }
-        else if(flag == 1){
+        else if(flag != 2){
             if( !(take == 0 && input == '0') ){
-                num2 *= 10;num2 += (input - '0');
+                num2 *= 10;
+                num2 += (input - '0');
                 take++;
                 flag = 3;
             }
