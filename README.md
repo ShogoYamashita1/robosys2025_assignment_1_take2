@@ -19,11 +19,11 @@ gcc dice_roll.c -o dice_roll
 $ git clone git@github.com:ShogoYamashita1/robosys2025_assignment_1_take2.git
 $ cd robosys2025_assignment_1_take2
 $ echo 5D10 | ./dice_roll
-[ 0]out :   5
-[ 1]out :   9
-[ 2]out :   1
-[ 3]out :   1
-[ 4]out :   3
+7
+8
+10
+4
+10
 ```
 
 ## 説明
