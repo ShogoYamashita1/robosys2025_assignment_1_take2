@@ -12,7 +12,7 @@
 ```bash
 $ git clone git@github.com:ShogoYamashita1/robosys2025_assignment_1_take2.git
 $ cd robosys2025_assignment_1_take2
-$ echo 5d10 | ./dice_roll
+$ echo 5D10 | ./dice_roll
 [ 0]out :   5
 [ 1]out :   9
 [ 2]out :   1
