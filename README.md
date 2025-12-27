@@ -1,4 +1,5 @@
 # dice_rollコマンド
+![test](https://github.com/ShogoYamashita1/robosys2025_assignment_1_take2/actions/workflows/test.yml/badge.svg)
 
 ターミナル上でダイスロールをするコマンドです。
 
