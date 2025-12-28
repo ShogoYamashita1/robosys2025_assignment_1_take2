@@ -5,53 +5,78 @@
 
 ### 異常終了関数 ###
 ng () {
+    if [ "${1}" != 0 ]; then
         echo ${1}行目で失敗しました
         res=1
+    fi
 }
 
 ### 行数チェック関数 ###
-row_counter () {
+row_checker () {
     out_row=$(echo ${2} | tr ' ' '\n' | wc -l)
 
     if [ "${1}" = "$out_row" ]; then
-        res=0
+        :
     else
-        ng "$LINENO"
+        echo "[Failed] row_checker failed"
+        return 1
     fi
+
+    return 0
+}
+
+### 出目チェック関数 ###
+roll_checker () {
+    for i in ${2}; do
+        if [ $i -gt ${1} ];then
+            echo "[Failed] roll_checker failed"
+            return 1
+        fi
+    done
+
+    return 0
 }
 
 
 res=0
+ng_line=0
 
 
 ### 通常入力 ###
 out=$(echo 3d2 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 3 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 3 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 2 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 out=$(echo 23d43 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 23 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 23 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 43 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 out=$(echo 65D53 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 65 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 65 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 53 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 out=$(echo 7d10 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 7 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 7 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 10 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 out=$(echo 8D20 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 8 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 8 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 20 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 out=$(echo 30d5 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 3 "${out}"
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 30 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 5 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
-out=$(echo 40D4 | ./dice_roll)
-[ "$?" = 0 ] || ng "$LINENO"
-row_counter 40 "${out}"
+out=$(echo 40D44 | ./dice_roll)
+[ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+row_checker 40 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+roll_checker 44 "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
 
 
 ### 特殊入力 ###
@@ -152,6 +177,13 @@ out=$(echo 6D07 | ./dice_roll)
 #out=$(echo 0.32d0.359 | ./dice_roll)
 #[ "$?" = 1 ] || ng "$LINENO"
 
+
 ### テスト結果 ###
-[ "${res}" = 0 ] && echo OK
+ng "$ng_line"
+if [ "${res}" = 0 ]; then
+    echo "All test cases passed successfully."
+else
+    echo "Test failed"
+fi
+
 exit $res
