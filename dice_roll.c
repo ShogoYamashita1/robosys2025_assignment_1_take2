@@ -63,7 +63,7 @@ if(flag == 3){
     return 0;
 }
 else{
-    fprintf(stderr, "\x1b[31merror: An invalid value was entered\n");
+    fprintf(stderr, "\x1b[31merror: An invalid value was entered\x1b[0m\n");
     return 1;
 }
 }
