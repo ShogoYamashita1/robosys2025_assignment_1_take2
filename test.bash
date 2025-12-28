@@ -2,10 +2,24 @@
 # SPDX-FileCopyrightText: 2025 Shogo Yamashita
 # SPDX-License-Identifier: MIT
 
+
+### 異常終了関数 ###
 ng () {
         echo ${1}行目で失敗しました
         res=1
 }
+
+### 行数チェック関数 ###
+row_counter () {
+    out_row=$(echo ${2} | tr ' ' '\n' | wc -l)
+
+    if [ "${1}" = "$out_row" ]; then
+        res=0
+    else
+        ng "$LINENO"
+    fi
+}
+
 
 res=0
 
@@ -13,9 +27,31 @@ res=0
 ### 通常入力 ###
 out=$(echo 3d2 | ./dice_roll)
 [ "$?" = 0 ] || ng "$LINENO"
+row_counter 3 "${out}"
 
-out=$(echo 3D10 | ./dice_roll)
+out=$(echo 23d43 | ./dice_roll)
 [ "$?" = 0 ] || ng "$LINENO"
+row_counter 23 "${out}"
+
+out=$(echo 65D53 | ./dice_roll)
+[ "$?" = 0 ] || ng "$LINENO"
+row_counter 65 "${out}"
+
+out=$(echo 7d10 | ./dice_roll)
+[ "$?" = 0 ] || ng "$LINENO"
+row_counter 7 "${out}"
+
+out=$(echo 8D20 | ./dice_roll)
+[ "$?" = 0 ] || ng "$LINENO"
+row_counter 8 "${out}"
+
+out=$(echo 30d5 | ./dice_roll)
+[ "$?" = 0 ] || ng "$LINENO"
+row_counter 3 "${out}"
+
+out=$(echo 40D4 | ./dice_roll)
+[ "$?" = 0 ] || ng "$LINENO"
+row_counter 40 "${out}"
 
 
 ### 特殊入力 ###
@@ -103,6 +139,18 @@ out=$(echo 8d03 | ./dice_roll)
 out=$(echo 6D07 | ./dice_roll)
 [ "$?" = 1 ] || ng "$LINENO"
 
+
+#out=$(echo 1.0d5.3 | ./dice_roll)
+#[ "$?" = 1 ] || ng "$LINENO"
+
+#out=$(echo 2.32d0.77 | ./dice_roll)
+#[ "$?" = 1 ] || ng "$LINENO"
+
+#out=$(echo 0.544d4.8 | ./dice_roll)
+#[ "$?" = 1 ] || ng "$LINENO"
+
+#out=$(echo 0.32d0.359 | ./dice_roll)
+#[ "$?" = 1 ] || ng "$LINENO"
 
 ### テスト結果 ###
 [ "${res}" = 0 ] && echo OK
