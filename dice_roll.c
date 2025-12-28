@@ -48,7 +48,6 @@ while((input = getchar()) != EOF){
         }
     }
     else if(input != '\n'){
-        puts("not d");
         flag = 2;
     }
 }
@@ -56,15 +55,15 @@ while((input = getchar()) != EOF){
 
 // 終了処理
 if(flag == 3){
-srand((unsigned int)time(NULL));
+    srand((unsigned int)time(NULL));
 
-for(int i = 0; i < dice_count; i++){
-    printf("%d\n", GetRandom(1, face_count));
-}
+    for(int i = 0; i < dice_count; i++){
+        printf("%d\n", GetRandom(1, face_count));
+    }
     return 0;
 }
 else{
-    fprintf(stderr, "error\n");
+    fprintf(stderr, "\x1b[31merror: An invalid value was entered\n");
     return 1;
 }
 }
