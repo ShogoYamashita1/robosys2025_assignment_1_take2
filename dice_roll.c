@@ -1,3 +1,6 @@
+// SPDX-FileCopyrightText: 2025 Shogo Yamashita
+// SPDX-License-Identifier: MIT
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<time.h>
