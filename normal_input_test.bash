@@ -28,7 +28,7 @@ row_checker () {
 }
 
 ### 出目チェック関数 ###
-# 出力結果が指定した出目の最大値を超えていないか確認
+# 出力結果が指定した面数を超えていないか確認
 roll_checker () {
     for k in ${2}; do
         if [ $k -gt ${1} ];then
@@ -45,23 +45,34 @@ res=0
 ng_line=0
 row_test_upper_limit=100
 roll_test_upper_limit=100
-
+test_repetition=1  # 念入りに確認する時用
 
 ### 通常入力 ###
-# 1~test_upper_limitまでダイスロール
-for ((i=1; i < $row_test_upper_limit; i++)); do
-    for ((j=1; j < $roll_test_upper_limit; j++)); do
-        echo ${i}d${j}
-        out=$(echo ${i}d${j} | ./dice_roll)
-        [ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
-        row_checker $i "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
-        roll_checker $j "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
-        if [ $ng_line == 0 ];then
-            echo -e "\e[32mpassed\e[0m"
-        fi
+# 標準入力でダイスロール
+for ((h=1; h <= $test_repetition; h++)); do
+    echo "[TEST] take $h"
+    for ((i=1; i < $row_test_upper_limit; i++)); do
+        for ((j=1; j < $roll_test_upper_limit; j++)); do
+            echo ${i}d${j} ${i}D${j}
+
+            out=$(echo ${i}d${j} | ./dice_roll)
+            [ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+            row_checker $i "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+            roll_checker $j "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+
+            out=$(echo ${i}D${j} | ./dice_roll)
+            [ "$?" = 0 ] || { ng_line="$LINENO" ; ng "$ng_line"; }
+            row_checker $i "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+            roll_checker $j "${out}" || { ng_line="$LINENO" ; ng "$ng_line"; }
+
+            if [ $ng_line == 0 ];then
+                echo -e "\e[32mpassed\e[0m"
+            else
+                echo -e "\e[31mfailed line${ng_line}\e[0m"
+            fi
+        done
     done
 done
-
 
 
 ### テスト結果 ###
