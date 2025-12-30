@@ -10,6 +10,8 @@ jobs:
     - name: Compile
       run: gcc dice_roll.c -o dice_roll
 
-    - name: Normal/Invalid input test
+    - name: Normal input test
       run: bash ./normal_input_test.bash
+
+    - name: Invalid input test
       run: bash -xv ./invalid_input_test.bash
